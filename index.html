@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Peppa Pig Car Game - Drive a pink car with Peppa Pig, avoid obstacles, and collect power-ups!">
+    <meta name="theme-color" content="#ff6699">
+    <title>Peppa Pig Car Game</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="game-container">
+        <h1>Peppa Pig Car Game</h1>
+        <div id="game-canvas">
+            <!-- Game UI elements -->
+            <div id="lives-container">
+                <div class="life">1</div>
+                <div class="life">2</div>
+                <div class="life">3</div>
+            </div>
+            <div id="level-container">Level 1</div>
+            <div id="timer-container">Time: 20s</div>
+            <div id="score-container">Score: 0</div>
+            
+            <!-- Peppa Pig car -->
+            <div id="car-container">
+                <img id="peppa-car" src="assets/PeppaPig_2167126.png" alt="Peppa Pig in Race Car">
+            </div>
+            
+            <!-- Road with obstacles -->
+            <div id="road">
+                <div class="road-marking"></div>
+                <div id="obstacles-container"></div>
+            </div>
+            
+            <!-- Game over screen (hidden initially) -->
+            <div id="game-over" style="display: none;">
+                <h2>Game Over!</h2>
+                <p>Oops! Peppa hit too many obstacles.</p>
+                <p>Your score: <span id="final-score">0</span></p>
+                <button id="restart-btn">Play Again</button>
+                <p style="font-size: 0.8em; margin-top: 15px;">Press the button to try again!</p>
+            </div>
+        </div>
+        <div class="controls">
+            <p>Phase 1: Character and Vehicle Setup</p>
+            <p>Use this page to approve the Peppa Pig character and car visuals.</p>
+        </div>
+    </div>
+    <script src="assets/audio/sounds.js"></script>
+    <script src="js/game.js"></script>
+</body>
+</html>
