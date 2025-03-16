@@ -3,6 +3,24 @@
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Game initialized - Phase 4: Level-Based Gameplay');
     
+    // Preload sounds to ensure they work on first interaction
+    preloadSounds();
+    
+    // Add a click event to start audio context
+    document.addEventListener('click', initAudio, { once: true });
+    
+    function initAudio() {
+        // Play and immediately pause a sound to initialize audio context
+        const audio = playSound('bing');
+        if (audio) {
+            audio.volume = 0;
+            setTimeout(() => {
+                if (audio) audio.pause();
+            }, 50);
+        }
+        console.log('Audio context initialized');
+    }
+    
     // Game elements
     const gameCanvas = document.getElementById('game-canvas');
     const carContainer = document.getElementById('car-container');
@@ -125,7 +143,8 @@ document.addEventListener('DOMContentLoaded', function() {
             levelTimer: null,
             obstaclesHit: 0,
             levelCompleted: false,
-            showingFinishLine: false
+            showingFinishLine: false,
+            carMotorSound: gameState.carMotorSound
         };
         
         // Clear obstacles and power-ups
@@ -416,7 +435,7 @@ document.addEventListener('DOMContentLoaded', function() {
         switch(type) {
             case 'star':
                 updateScore(gameState.score + 50);
-                playSound('powerup');
+                playSound('bing');
                 break;
                 
             case 'shield':
@@ -598,6 +617,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Increase score for avoided obstacles
                 if (!obstacle.hit && gameState.levelStarted && !gameState.levelCompleted) {
                     updateScore(gameState.score + 10);
+                    playSound('bing');
                 }
             }
         }
@@ -831,6 +851,99 @@ document.addEventListener('DOMContentLoaded', function() {
     // Create touch controls for mobile
     createTouchControls();
     
-    // Start the game
-    initGame();
+    // Create start game overlay
+    const startOverlay = document.createElement('div');
+    startOverlay.style.position = 'absolute';
+    startOverlay.style.top = '0';
+    startOverlay.style.left = '0';
+    startOverlay.style.width = '100%';
+    startOverlay.style.height = '100%';
+    startOverlay.style.backgroundColor = 'rgba(255, 230, 240, 0.9)';
+    startOverlay.style.display = 'flex';
+    startOverlay.style.flexDirection = 'column';
+    startOverlay.style.alignItems = 'center';
+    startOverlay.style.justifyContent = 'center';
+    startOverlay.style.zIndex = '100';
+    
+    // Add Peppa Pig title
+    const gameTitle = document.createElement('h1');
+    gameTitle.textContent = 'Peppa Pig Car Game';
+    gameTitle.style.color = '#ff6699';
+    gameTitle.style.fontFamily = 'Comic Sans MS, cursive, sans-serif';
+    gameTitle.style.fontSize = '36px';
+    gameTitle.style.marginBottom = '20px';
+    gameTitle.style.textShadow = '2px 2px 4px rgba(0, 0, 0, 0.2)';
+    
+    // Create start game button
+    const startGameBtn = document.createElement('button');
+    startGameBtn.textContent = 'Start Game';
+    startGameBtn.style.padding = '15px 30px';
+    startGameBtn.style.fontSize = '24px';
+    startGameBtn.style.backgroundColor = '#ff6699';
+    startGameBtn.style.border = '3px solid #ff4477';
+    startGameBtn.style.borderRadius = '10px';
+    startGameBtn.style.color = 'white';
+    startGameBtn.style.cursor = 'pointer';
+    startGameBtn.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.3)';
+    startGameBtn.style.fontFamily = 'Comic Sans MS, cursive, sans-serif';
+    startGameBtn.style.transition = 'transform 0.2s, background-color 0.2s';
+    
+    // Add hover effect
+    startGameBtn.onmouseover = function() {
+        startGameBtn.style.backgroundColor = '#ff4477';
+        startGameBtn.style.transform = 'scale(1.05)';
+    };
+    
+    startGameBtn.onmouseout = function() {
+        startGameBtn.style.backgroundColor = '#ff6699';
+        startGameBtn.style.transform = 'scale(1)';
+    };
+    
+    // Add instructions text
+    const instructionsText = document.createElement('p');
+    instructionsText.innerHTML = 'Use UP and DOWN arrow keys to move Peppa\'s car.<br>Avoid obstacles and collect power-ups!';
+    instructionsText.style.color = '#333';
+    instructionsText.style.fontFamily = 'Arial, sans-serif';
+    instructionsText.style.fontSize = '18px';
+    instructionsText.style.marginTop = '20px';
+    instructionsText.style.textAlign = 'center';
+    
+    // Add elements to overlay
+    startOverlay.appendChild(gameTitle);
+    startOverlay.appendChild(startGameBtn);
+    startOverlay.appendChild(instructionsText);
+    
+    // Add overlay to game canvas
+    gameCanvas.appendChild(startOverlay);
+    
+    // Start button event listener
+    startGameBtn.addEventListener('click', function() {
+        // Create and initialize audio context explicitly
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        const audioContext = new AudioContext();
+        
+        // Force audio context to resume (needed for some browsers)
+        if (audioContext.state === 'suspended') {
+            audioContext.resume();
+        }
+        
+        // Play a sound to initialize audio context with a slight delay
+        setTimeout(() => {
+            // Play a test sound to ensure audio is working
+            const testSound = playSound('bing');
+            if (testSound) {
+                console.log('Audio initialized successfully');
+            }
+            
+            // Start background music
+            bgMusicObject = playBackgroundMusic();
+            bgMusicPlaying = true;
+            
+            // Remove start overlay
+            startOverlay.remove();
+            
+            // Start the game
+            initGame();
+        }, 100);
+    });
 });
