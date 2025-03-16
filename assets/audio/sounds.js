@@ -8,7 +8,8 @@ const AUDIO = {
     gameOver: "https://assets.mixkit.co/sfx/preview/mixkit-player-losing-or-failing-2042.mp3",
     bgMusic: "https://assets.mixkit.co/sfx/preview/mixkit-game-level-music-689.mp3",
     levelComplete: "https://assets.mixkit.co/sfx/preview/mixkit-winning-chimes-2015.mp3",
-    crowdCheer: "https://assets.mixkit.co/sfx/preview/mixkit-crowd-in-stadium-cheering-loop-442.mp3"
+    crowdCheer: "https://assets.mixkit.co/sfx/preview/mixkit-crowd-in-stadium-cheering-loop-442.mp3",
+    carMotor: "assets/audio/car-motor-36308.mp3"
 };
 
 // Function to play a sound

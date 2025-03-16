@@ -63,7 +63,8 @@ document.addEventListener('DOMContentLoaded', function() {
         levelTimer: null,
         obstaclesHit: 0,
         levelCompleted: false,
-        showingFinishLine: false
+        showingFinishLine: false,
+        carMotorSound: null
     };
     
     // Lane positions (from bottom of road)
@@ -81,6 +82,16 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!bgMusicPlaying) {
             bgMusicObject = playBackgroundMusic();
             bgMusicPlaying = true;
+        }
+        
+        // Start car motor sound
+        if (gameState.carMotorSound) {
+            gameState.carMotorSound.pause();
+        }
+        gameState.carMotorSound = playSound('carMotor');
+        if (gameState.carMotorSound) {
+            gameState.carMotorSound.loop = true;
+            gameState.carMotorSound.volume = 0.3;
         }
         
         // Reset game state
@@ -317,6 +328,9 @@ document.addEventListener('DOMContentLoaded', function() {
         // Increase difficulty with level
         gameState.obstacleSpeed = 5 + (newLevel - 1) * 1;
         gameState.obstacleInterval = Math.max(500, 2000 - (newLevel - 1) * 300);
+        
+        // Reset road position to ensure animation continues in new level
+        gameState.roadPosition = 0;
     }
     
     // Update timer display
@@ -505,6 +519,12 @@ document.addEventListener('DOMContentLoaded', function() {
         // Clear level timer
         if (gameState.levelTimer) {
             clearInterval(gameState.levelTimer);
+        }
+        
+        // Stop car motor sound
+        if (gameState.carMotorSound) {
+            gameState.carMotorSound.pause();
+            gameState.carMotorSound = null;
         }
         
         // Play game over sound

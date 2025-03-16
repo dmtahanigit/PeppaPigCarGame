@@ -254,9 +254,10 @@ h1 {
     position: absolute;
     right: -100px;
     bottom: 0;
-    width: 10px;
+    width: 20px;
     height: 120px;
-    background-color: #333;
+    background-image: url('../assets/finish_line.jpg');
+    background-size: cover;
     z-index: 15;
     animation: slide-in-finish 15s forwards;
 }
